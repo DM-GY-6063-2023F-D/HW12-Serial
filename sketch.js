@@ -5,49 +5,90 @@ let SERVER_ADDRESS = "http://10.10.81.101/data";
 let readyToLoad;
 
 // project variables
-let mPlayer = {
-  x: 0,
-  y: 0,
-  diameter: 0,
-};
+let gridSize = 20;
+let player;
+let maze;
+let currentAngle = 0;
+
+let prevLeft = 0;
+let prevRight = 0;
 
 function parseData(res) {
   // get data from WiFi response
   let data = res.data;
-  let a0 = data.A0;
-  let d2 = data.D2;
+  let potDelta = data.A0.delta;
+  let currentLeft = data.d2.value;
+  let currentRight = data.d3.value;
 
   // use data to update project variables
-  mPlayer.x = map(a0.value, 0, 4095, 0, width);
-  mPlayer.diameter = map(d2.count, 0, 20, 20, 80);
-
-  if (d2.isPressed) {
-    mPlayer.y -= 100;
-  } else if (mPlayer.y < height - 100) {
-    mPlayer.y += 16;
+  if (potDelta != 0) {
+    currentAngle += potDelta;
   }
+
+  if (prevLeft != currentLeft && currentLeft) {
+    currentAngle += 1;
+  }
+  prevLeft = currentLeft
+
+  if (prevRight != currentRight && currentRight) {
+    currentAngle -= 1;
+  }
+  prevRight = currentRight;
 
   // WiFi update
   readyToLoad = true;
 }
 
-function setup() {
-  // project setup
-  createCanvas(windowWidth, windowHeight);
-  mPlayer = {
-    x: 0,
-    y: height - 100,
-    diameter: 20,
-  };
+function createPlayer() {
+  player = new Sprite(width / 2, height / 2, gridSize - 2);
+  player.color = color(255, 255, 0);
+}
 
-  // WiFi setup
+function createMaze() {
+  maze = [];
+  let sx = width / 2;
+  let sy = height / 2;
+
+  for (let y = 0; y < height; y += gridSize) {
+    for (let x = 0; x < width; x += gridSize) {
+      if (random() < 0.3333) {
+        let sprite = new Sprite(sx, sy, gridSize, gridSize, "k");
+        sprite.offset.x = x - width / 2;
+        sprite.offset.y = y - height / 2;
+        sprite.color = 0;
+        maze.push(sprite);
+      }
+    }
+  }
+}
+
+function setup() {
+  randomSeed(1010);
+  new Canvas(windowHeight, windowHeight);
+  world.gravity.y = 5;
+  createMaze();
+  createPlayer();
   readyToLoad = true;
 }
 
 function draw() {
-  // project code
   background(220, 20, 120);
-  ellipse(mPlayer.x, mPlayer.y, mPlayer.diameter, mPlayer.diameter);
+  for (let i = 0; i < maze.length; i++) {
+    maze[i].rotateTo(currentAngle, 3);
+  }
+
+  if (player.x > width || player.x < 0 || player.y > height || player.y < 0) {
+    for (let i = 0; i < maze.length; i++) {
+      maze[i].remove();
+    }
+    maze = null;
+
+    player.remove();
+    player = null;
+    createMaze();
+    createPlayer();
+    currentAngle = 0;
+  }
 
   // WiFi update
   if (readyToLoad) {
