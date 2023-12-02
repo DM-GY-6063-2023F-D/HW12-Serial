@@ -17,8 +17,8 @@ function parseData(res) {
   // get data from WiFi response
   let data = res.data;
   let potDelta = data.A0.delta;
-  let currentLeft = data.d2.value;
-  let currentRight = data.d3.value;
+  let currentLeft = data.D2.isPressed;
+  let currentRight = data.D3.isPressed;
 
   // use data to update project variables
   if (potDelta != 0) {

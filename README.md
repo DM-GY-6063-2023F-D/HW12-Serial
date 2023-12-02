@@ -1,26 +1,32 @@
-# Final Project Template using WiFi
+# HW12
 
-Arduino reads a button on pin 2 and a potentiometer on pin A0 and passes those values on to the p5js sketch using a WiFi connection.
+Maze game from week09 ([code](https://github.com/DM-GY-6063-2023F-D/week09/tree/main/play-maze), [original game](https://dm-gy-6063-2023f-d.github.io/week09/play-maze/)), but updated to use an Arduino with 2 buttons and a potentiometer to control it.
 
-The object that is created and sent to p5js looks like this:
+The object that is created by the Arduino and sent to p5js looks like this:
 
 ```
 data = {
-  A0: { value: integer },
+  A0: {
+    value: integer,
+    delta:  [-1, 0, 1]
+  },
   D2: {
     isPressed: boolean,
-    count: integer
+  },
+  D3: {
+    isPressed: boolean,
   }
 }
 ```
 
-In p5js ```A0.value``` is used to change ellipse position in X, ```D2.isPressed``` is used to change position in Y and ```D2.count``` is used to change the size of the ellipse.
+```A0.delta``` is used to update the rotation of the maze: a positive delta means rotate left by 1°, a negative delta means rotate right by 1°, and a zero means no rotation.
 
-## Important
-Before uploading code to Arduino board, make sure to copy ```config.example.h``` to ```config.h``` and update it with a valid WiFi ID and password.
+```D2.isPressed``` can also be used to rotate left by 1° and ```D3.isPressed``` to rotate right by 1°.
 
 ## Schematic
-![](https://6063d.github.io/imgs/FinalProject_sch.jpg)
 
 ## Board
-![](https://6063d.github.io/imgs/FinalProject_bb.jpg)
+
+## Picture
+
+## Video
