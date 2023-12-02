@@ -1,25 +1,14 @@
-// WiFi parameter
-let SERVER_ADDRESS = "http://10.10.81.101/data";
-let mSerial;
-
-// WiFi variable
-let readyForWifi;
-
 // Serial variable
-let readyForSerial;
+let mSerial;
+let readyForSerialData;
 let serialButton;
-let sendEnd;
+let sendSuccess;
 
 // project variables
 let gridSize = 20;
 let player;
 let maze;
 let currentAngle = 0;
-
-function handleWiFiResponse(res) {
-  parseData(res.data);
-  readyForWifi = true;
-}
 
 function readSerial() {
   let line = mSerial.readUntil("\n");
@@ -31,19 +20,13 @@ function readSerial() {
     parseData(data);
   }
 
-  readyForSerial = true;
+  readyForSerialData = true;
 }
 
 function parseData(data) {
   // get values from data
-  let potDelta = data.A0.delta;
   let currentLeft = data.B0.isPressed;
   let currentRight = data.B1.isPressed;
-
-  // use data to update project variables
-  if (potDelta != 0) {
-    currentAngle += potDelta;
-  }
 
   if (currentLeft) {
     currentAngle += 1;
@@ -58,7 +41,7 @@ function connectToSerial() {
   if (!mSerial.opened()) {
     mSerial.open(9600);
     serialButton.hide();
-    readyForSerial = true;
+    readyForSerialData = true;
   }
 }
 
@@ -98,18 +81,19 @@ function setup() {
   serialButton.position(width / 2, height / 2);
   serialButton.mousePressed(connectToSerial);
 
-  readyForWifi = false;
-  readyForSerial = false;
-
-  sendEnd = false;
+  readyForSerialData = false;
+  sendSuccess = false;
 }
 
 function draw() {
   background(220, 20, 120);
+
+  // update board rotation
   for (let i = 0; i < maze.length; i++) {
     maze[i].rotateTo(currentAngle, 3);
   }
 
+  // if ball goes off the board
   if (player.x > width || player.x < 0 || player.y > height || player.y < 0) {
     for (let i = 0; i < maze.length; i++) {
       maze[i].remove();
@@ -121,26 +105,19 @@ function draw() {
     createMaze();
     createPlayer();
     currentAngle = 0;
-
-    sendEnd = true;
-  }
-
-  // WiFi update
-  if (readyForWifi) {
-    readyForWifi = false;
-    loadJSON(SERVER_ADDRESS, handleWiFiResponse);
+    sendSuccess = true;
   }
 
   // Serial update
   if (mSerial.opened()) {
-    if (readyForSerial) {
+    if (readyForSerialData) {
       mSerial.clear();
-      if (sendEnd) {
-        sendEnd = false;
-        mSerial.write("E");
+      if (sendSuccess) {
+        sendSuccess = false;
+        mSerial.write("S");
       } else {
-        readyForSerial = false;
-        mSerial.write("T");
+        readyForSerialData = false;
+        mSerial.write("D");
       }
     } else if (mSerial.availableBytes() > 0) {
       readSerial();

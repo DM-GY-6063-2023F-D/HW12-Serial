@@ -1,2 +1,0 @@
-String SSID("SSID");
-String SSID_PASSWORD("PASSWORD");

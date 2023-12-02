@@ -5,27 +5,19 @@
 // project variables
 int B0PIN = 2;
 int B1PIN = 3;
-int POTPIN = A0;
 int LEDPIN = 4;
 
 int b0Val = 0;
 int b1Val = 0;
 
-int currA0Val = 0;
-int prevA0Val = 0;
-int deltA0Val = 0;
-
-long turnOffLed = 0;
+long turnOffLedTime = 0;
+int LED_DURATION = 1000;
 
 void writeData() {
   StaticJsonDocument<128> resJson;
   JsonObject data = resJson.createNestedObject("data");
-  JsonObject jA0 = data.createNestedObject("A0");
   JsonObject jB0 = data.createNestedObject("B0");
   JsonObject jB1 = data.createNestedObject("B1");
-
-  jA0["value"] = currA0Val;
-  jA0["delta"] = 0;  //deltA0Val;
 
   jB0["isPressed"] = b0Val;
   jB1["isPressed"] = b1Val;
@@ -48,32 +40,22 @@ void setup() {
 
 void loop() {
   // read pins
-  currA0Val = analogRead(POTPIN);
   b0Val = digitalRead(B0PIN);
   b1Val = digitalRead(B1PIN);
 
-  deltA0Val = 0;
-  if (currA0Val - prevA0Val > 5) {
-    deltA0Val = 1;
-  } else if (currA0Val - prevA0Val < -5) {
-    deltA0Val = -1;
-  }
-
-  prevA0Val = currA0Val;
-
   if (Serial.available() > 0) {
     int byteIn = Serial.read();
-    if (byteIn == 'T') {
+    if (byteIn == 'D') {
       Serial.flush();
       writeData();
-    } else if (byteIn == 'E') {
+    } else if (byteIn == 'S') {
       Serial.flush();
       digitalWrite(LEDPIN, HIGH);
-      turnOffLed = millis() + 1000;
+      turnOffLedTime = millis() + LED_DURATION;
     }
   }
 
-  if (millis() > turnOffLed) {
+  if (millis() > turnOffLedTime) {
     digitalWrite(LEDPIN, LOW);
   }
 
