@@ -1,3 +1,5 @@
+#ifdef fuuuuu
+
 #include <WebServer.h>
 #include <WiFi.h>
 #include "esp_wpa2.h"
@@ -86,3 +88,5 @@ void loop() {
   server.handleClient();
   delay(2);
 }
+
+#endif
