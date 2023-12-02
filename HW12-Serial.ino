@@ -10,7 +10,7 @@ int LEDPIN = 4;
 int b0Val = 0;
 int b1Val = 0;
 
-long turnOffLedTime = 0;
+long turnLedOffTime = 0;
 int LED_DURATION = 1000;
 
 void writeData() {
@@ -51,11 +51,11 @@ void loop() {
     } else if (byteIn == 'S') {
       Serial.flush();
       digitalWrite(LEDPIN, HIGH);
-      turnOffLedTime = millis() + LED_DURATION;
+      turnLedOffTime = millis() + LED_DURATION;
     }
   }
 
-  if (millis() > turnOffLedTime) {
+  if (millis() > turnLedOffTime) {
     digitalWrite(LEDPIN, LOW);
   }
 

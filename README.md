@@ -19,8 +19,8 @@ data = {
 
 ## Schematic
 
-![](./HW12-Serial_sch.jpg)
+![](./imgs/HW12-Serial_sch.jpg)
 
 ## Board
 
-![](./HW12-Serial_bb.jpg)
+![](./imgs/HW12-Serial_bb.jpg)
