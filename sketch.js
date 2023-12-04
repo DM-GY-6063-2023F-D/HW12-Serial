@@ -57,7 +57,7 @@ function createMaze() {
 
   for (let y = 0; y < height; y += gridSize) {
     for (let x = 0; x < width; x += gridSize) {
-      if (random() < 0.3333) {
+      if (random() < 0.3333 && abs(sx - x) + abs(sy - y) > gridSize) {
         let sprite = new Sprite(sx, sy, gridSize, gridSize, "k");
         sprite.offset.x = x - width / 2;
         sprite.offset.y = y - height / 2;
@@ -90,11 +90,11 @@ function draw() {
 
   // update board rotation
   for (let i = 0; i < maze.length; i++) {
-    maze[i].rotateTo(currentAngle, 3);
+    maze[i].rotateTo(currentAngle, 50);
   }
 
   // if ball goes off the board
-  if (player.x > width || player.x < 0 || player.y > height || player.y < 0) {
+  if (player.y > height + gridSize) {
     for (let i = 0; i < maze.length; i++) {
       maze[i].remove();
     }
