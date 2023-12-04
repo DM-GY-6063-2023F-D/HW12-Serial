@@ -1,7 +1,5 @@
 #include <ArduinoJson.h>
 
-#include "config.h"
-
 // project variables
 int B0PIN = 2;
 int B1PIN = 3;
