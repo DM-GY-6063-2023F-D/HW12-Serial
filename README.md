@@ -41,6 +41,3 @@ data: {
 ![](./imgs/HW12-Serial_01.jpg)
 
 ## Video
-
-https://github.com/DM-GY-6063-2023F-D/HW12-Serial/assets/850815/5c1b2864-9721-4a63-a5e0-f8c26f232425
-
