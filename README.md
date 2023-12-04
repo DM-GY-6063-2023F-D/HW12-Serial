@@ -35,10 +35,14 @@ data: {
 
 ![](./imgs/HW12-Serial_bb.jpg)
 
-## Pictures
+## Actual Board
 
 ![](./imgs/HW12-Serial_00.jpg)
 ![](./imgs/HW12-Serial_01.jpg)
 
+https://github.com/DM-GY-6063-2023F-D/HW12-Serial/assets/850815/5247c0d7-efd8-425c-bdf2-316967e56b2b
+
 ## Video
+
+https://github.com/DM-GY-6063-2023F-D/HW12-Serial/assets/850815/5c1b2864-9721-4a63-a5e0-f8c26f232425
 
