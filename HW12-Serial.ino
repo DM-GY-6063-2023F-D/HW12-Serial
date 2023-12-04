@@ -9,7 +9,7 @@ int b0Val = 0;
 int b1Val = 0;
 
 long turnLedOffTime = 0;
-int LED_DURATION = 1000;
+int LED_DURATION = 2000;
 
 void writeData() {
   StaticJsonDocument<128> resJson;
