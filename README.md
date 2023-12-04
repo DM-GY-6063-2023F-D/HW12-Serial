@@ -34,3 +34,11 @@ data: {
 ## Board
 
 ![](./imgs/HW12-Serial_bb.jpg)
+
+## Pictures
+
+![](./imgs/HW12-Serial_00.jpg)
+![](./imgs/HW12-Serial_01.jpg)
+
+## Video
+
